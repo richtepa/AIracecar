@@ -3,7 +3,7 @@ class NNcoordinator {
         this.nnStructure = nnStructure;
         this.best = 10;
         this.pass = 10;
-        this.rand = 10;
+        this.rand = 45;
         this.bestNNs = new Array();
         this.generation = 0;
         this.createNNs();
@@ -127,11 +127,11 @@ class Node {
             for (var i = 0; i < preNodeAmount; i++) {
                 var gene1Weight = Math.random();
                 var gene2Weight = 1 - gene1Weight;
-                this.weights.push((node1.weights[i] * gene1Weight) + (node1.weights[i] * gene2Weight));
+                this.weights.push((node1.weights[i] * gene1Weight) + (node1.weights[i] * gene2Weight) + (Math.random()*0.1)-0.05);
             }
             var gene1Weight = Math.random();
             var gene2Weight = 1 - gene1Weight;
-            this.bias = (node1.bias * gene1Weight) + (node1.bias * gene2Weight);
+            this.bias = (node1.bias * gene1Weight) + (node1.bias * gene2Weight) + (Math.random()*0.1)-0.05;
         }
     }
 
