@@ -23,6 +23,9 @@ class Map {
         var dx = to.x - from.x;
         var dy = to.y - from.y;    
         var d = Math.sqrt((dx*dx)+(dy*dy));
+        if(d == 0){
+            return 1;
+        }
         var s = 0;
         for(; s <= d; s++){
             var checkx = from.x + (s/d*dx);
@@ -34,7 +37,7 @@ class Map {
         if(!this.checkPixel(to.x, to.y)){
             return s/d
         }
-        return -1;
+        return 1;
     }
     
     checkPixel(x, y){

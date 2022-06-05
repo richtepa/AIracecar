@@ -1,3 +1,6 @@
+localBest = 0;
+globalBest = 0;
+
 window.onload = function () {
     load();
 }
@@ -13,6 +16,7 @@ async function load() {
 }
 
 function start() {
+    running = true;
     loop = window.setInterval(function () {
         for(car of visu.cars){
             car.frame();
@@ -23,4 +27,13 @@ function start() {
 
 function stop() {
     window.clearInterval(loop);
+    running = false;
+}
+
+function pause(){
+    if(running){
+        stop();
+    } else {
+        start();
+    }
 }

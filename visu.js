@@ -1,6 +1,9 @@
 class Visu {
     constructor(el) {
         this.fps = 30;
+        this.nnCoordinator = new NNcoordinator([9, 10, 10, 5, 2]);
+
+
 
         this.height = window.innerHeight;
         this.width = window.innerWidth;
@@ -12,7 +15,6 @@ class Visu {
         el.appendChild(canvas);
 
         canvas.addEventListener("click", this.click);
-
     }
 
     click(event) {
@@ -30,24 +32,25 @@ class Visu {
     }
 
     reset() {
-        console.log("reset");
-        for (var corner of this.map.mapData.corners) {
-            corner.passed = false;
+        for (var checkpoint of this.map.mapData.checkpoints) {
+            checkpoint.passed = false;
         }
         this.cars = new Array();
-        this.cars.push(new Car({
-            map: this.map
-        }));
+        this.cars.push(new Car(this.map, this.nnCoordinator.getNextNN()));
     }
 
     frame() {
         this.c.clearRect(0, 0, this.width, this.height);
         this.drawStart();
-        for (var corner of this.map.mapData.corners) {
-            this.drawCorner(corner);
+        for (var checkpoint of this.map.mapData.checkpoints) {
+            this.drawCheckpoint(checkpoint);
         }
         this.drawCar(this.cars[0]);
         this.drawHUD(this.cars[0]);
+
+        if (!this.cars[0].running) {
+            this.load();
+        }
     }
 
     drawMap() {
@@ -67,15 +70,28 @@ class Visu {
 
     }
 
-    drawCorner(corner) {
-        this.drawBox(corner, corner.passed ? "green" : "red");
+    drawCheckpoint(checkpoint) {
+        this.drawBox(checkpoint, checkpoint.passed ? "green" : "red");
     }
 
     drawCar(car) {
         this.drawBox(car.pos, "blue");
-        this.drawLine(car.pos, car.lastCorner, "green");
-        this.drawLine(car.pos, car.actualCorner, "red");
-        this.drawLine(car.pos, car.nextCorner, "gray");
+        //this.drawLine(car.pos, car.lastCheckpoint, "green");
+        //this.drawLine(car.pos, car.actualCheckpoint, "red");
+        //this.drawLine(car.pos, car.nextCheckpoint, "gray");
+
+        for (var i = 0; i < car.distances.length; i++) {
+            var to = new Object();
+            var dir = car.direction - (car.inp.dir * car.dirFactor) + car.sensorDirections[i];
+            var dx = Math.cos(dir);
+            var dy = Math.sin(dir);
+
+            this.drawLine(car.pos, {
+                "x": car.pos.x + (car.distances[i] * dx * car.sensorReach),
+                "y": car.pos.y + (car.distances[i] * dy * car.sensorReach)
+            }, "red")
+        }
+
     }
 
     drawHUD(car) {
@@ -99,6 +115,8 @@ class Visu {
         this.c.textBaseline = "middle";
         this.c.font = size / 10 + "px sans-serif";
         this.c.fillText(car.frameCounter, left + size + border, top + (size / 2));
+        
+        this.c.fillText(this.nnCoordinator.generation + "(" + localBest + "/" + globalBest + ")", border, border + width);
 
     }
 

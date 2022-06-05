@@ -31,3 +31,7 @@ function direction(from, to) {
     var rad = Math.atan2(dy, dx);
     return rad;
 }
+
+function sigmoid(value) {
+    return value / Math.sqrt(1 + (value * value));
+}
