@@ -21,6 +21,7 @@ class Visu {
 
     async setMap(map) {
         this.map = map;
+        this.drawMap();
     }
 
     load() {
@@ -41,7 +42,6 @@ class Visu {
 
     frame() {
         this.c.clearRect(0, 0, this.width, this.height);
-        this.drawMap();
         this.drawStart();
         for (var corner of this.map.mapData.corners) {
             this.drawCorner(corner);
@@ -59,8 +59,7 @@ class Visu {
         } else {
             this.scale = scale2;
         }
-
-        this.c.drawImage(this.map.mapImage, 0, 0, this.map.mapImage.naturalWidth * this.scale, this.map.mapImage.naturalHeight * this.scale);
+        this.map.draw(this.scale);
     }
 
     drawStart() {

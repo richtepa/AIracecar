@@ -5,7 +5,7 @@ window.onload = function () {
 async function load() {
     visu = new Visu(document.getElementById("content"));
     map = new Map();
-    await map.load("austria");
+    await map.load("austria", document.getElementById("map"));
     visu.setMap(map);
     visu.load();
     

@@ -25,14 +25,17 @@ class Car {
             this.speed,
             this.direction,
             this.lastCorner.distance,
-            this.lastCorner.direction,
+            this.lastCorner.direction - this.direction,
             this.actualCorner.distance,
-            this.actualCorner.direction,
+            this.actualCorner.direction - this.direction,
             this.nextCorner.distance,
-            this.nextCorner.direction
+            this.nextCorner.direction - this.direction
         ];
         var data = this.nn.frame(information);
-        this.inp = {acc: data[0], dir: data[1]};
+        this.inp = {
+            acc: data[0],
+            dir: data[1]
+        };
 
         this.speed += this.inp.acc * this.accFactor;
         this.direction += this.inp.dir * this.dirFactor;
@@ -53,8 +56,18 @@ class Car {
     }
 
     updatePosition() {
-        this.pos.x += Math.cos(this.direction) * this.speed;
-        this.pos.y += Math.sin(this.direction) * this.speed;
+        var dx = Math.cos(this.direction) * this.speed;
+        var dy = Math.sin(this.direction) * this.speed;
+        var lost = this.map.checkLine(this.pos, {
+            "x": this.pos.x + dx,
+            "y": this.pos.y + dy
+        });
+        if(lost >= 0){
+            //console.log("% lost", Math.round(lost*100));
+            this.lost();
+        }
+        this.pos.x += dx;
+        this.pos.y += dy;
     }
 
     checkCorner(num) {
@@ -80,6 +93,11 @@ class Car {
 
     done() {
         console.log("done");
+        stop();
+    }
+
+    lost() {
+        console.log("lost");
         stop();
     }
 }

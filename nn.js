@@ -7,7 +7,7 @@ class NN{
         
         
         
-        var out = [0, inp[5] - inp[1]];
+        var out = [0, inp[5]];
         for(var i = 0; i < out.length; i++){
             if(out[i] < -1){
                 out[i] = -1;
