@@ -81,7 +81,8 @@ class NNcoordinator {
             this.evaluateNNs();
             this.createNNs();
             this.nnNum++;
-            localBest = 0;
+            longest = 0;
+            fastest = Infinity;
             console.log("new generation");
         }
         return this.nextNNs[this.nnNum];
