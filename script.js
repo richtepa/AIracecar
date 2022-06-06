@@ -8,9 +8,13 @@ window.onload = function () {
 async function load() {
     visu = new Visu(document.getElementById("content"));
     map = new Map();
-    await map.load("italia_1", document.getElementById("map"));
+    await map.load("austria", document.getElementById("map"));
+    //await map.load("italia_1", document.getElementById("map"));
     visu.setMap(map);
     visu.load();
+    
+    var bestJSON = await loadJson("best.json");
+    visu.nnCoordinator.nextNNs[1] = visu.nnCoordinator.createNNfromJSON(bestJSON);
     
     start();
 }

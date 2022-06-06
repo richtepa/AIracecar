@@ -37,7 +37,7 @@ class NNcoordinator {
         }
         this.nnNum = -1;
     }
-
+    
     createNNfromJSON(json) {
         return new NN(this.nnStructure, json, json, 0);
     }
@@ -102,9 +102,9 @@ class NN {
             var colNodes = new Array();
             for (var i = 0; i < net[c]; i++) {
                 if (nn1 == undefined || nn2 == undefined) {
-                    colNodes.push(new Node(net[c - 1]), , , bias);
+                    colNodes.push(new Node(net[c - 1], undefined, undefined, bias));
                 } else {
-                    colNodes.push(new Node(net[c - 1], nn1.net[c - 1][i], nn2.net[c - 1][i]), bias);
+                    colNodes.push(new Node(net[c - 1], nn1.net[c - 1][i], nn2.net[c - 1][i], bias));
                 }
             }
             this.net.push(colNodes);
