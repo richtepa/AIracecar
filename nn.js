@@ -37,9 +37,9 @@ class NNcoordinator {
         }
         this.nnNum = -1;
     }
-    
-    createNNfromJSON(json){
-        return new NN(this.nnStructure, json, json);
+
+    createNNfromJSON(json) {
+        return new NN(this.nnStructure, json, json, 0);
     }
 
     evaluateNNs() {
@@ -55,7 +55,7 @@ class NNcoordinator {
                 return 1;
             }
 
-            
+
             // longer since checkpoints
             if (a.sinceLastCheckpoint > b.sinceLastCheckpoint) {
                 return -1;
@@ -63,8 +63,8 @@ class NNcoordinator {
             if (a.sinceLastCheckpoint > b.sinceLastCheckpoint) {
                 return 1;
             }
-            
-            
+
+
             // shorter completion
             if (a.frameCounter < b.frameCounter) {
                 return -1;
@@ -93,7 +93,7 @@ class NNcoordinator {
 
 
 class NN {
-    constructor(netStruct, nn1 = undefined, nn2 = undefined) {
+    constructor(netStruct, nn1 = undefined, nn2 = undefined, bias = 0.1) {
         this.reset();
         var net = [...netStruct];
         net.unshift(0); // [0, 9, 10, 10, 5, 2]
@@ -102,22 +102,22 @@ class NN {
             var colNodes = new Array();
             for (var i = 0; i < net[c]; i++) {
                 if (nn1 == undefined || nn2 == undefined) {
-                    colNodes.push(new Node(net[c - 1]));
+                    colNodes.push(new Node(net[c - 1]), , , bias);
                 } else {
-                    colNodes.push(new Node(net[c - 1], nn1.net[c - 1][i], nn2.net[c - 1][i]));
+                    colNodes.push(new Node(net[c - 1], nn1.net[c - 1][i], nn2.net[c - 1][i]), bias);
                 }
             }
             this.net.push(colNodes);
         }
     }
-    
-    reset(){
+
+    reset() {
         this.checkpoints = 0;
         this.sinceLastCheckpoint = 0;
         this.frameCounter = 0;
     }
-    
-    export(){
+
+    export () {
         return JSON.stringify(this);
     }
 
@@ -155,7 +155,7 @@ class NN {
 }
 
 class Node {
-    constructor(preNodeAmount, node1 = undefined, node2 = undefined) {
+    constructor(preNodeAmount, node1 = undefined, node2 = undefined, bias = undefined) {
         this.value = 0
         this.weights = new Array();
         if (node1 == undefined || node2 == undefined) {
@@ -168,11 +168,11 @@ class Node {
             for (var i = 0; i < preNodeAmount; i++) {
                 var gene1Weight = Math.random();
                 var gene2Weight = 1 - gene1Weight;
-                this.weights.push((node1.weights[i] * gene1Weight) + (node1.weights[i] * gene2Weight) + (Math.random() * 0.1) - 0.05);
+                this.weights.push((node1.weights[i] * gene1Weight) + (node1.weights[i] * gene2Weight) + (Math.random() * bias) - (bias / 2));
             }
             var gene1Weight = Math.random();
             var gene2Weight = 1 - gene1Weight;
-            this.bias = (node1.bias * gene1Weight) + (node1.bias * gene2Weight) + (Math.random() * 0.1) - 0.05;
+            this.bias = (node1.bias * gene1Weight) + (node1.bias * gene2Weight) + (Math.random() * bias) - (bias / 2);
         }
     }
 
