@@ -3,7 +3,7 @@ class Car {
         this.nn = nn;
         this.accFactor = 1;
         this.dirFactor = 0.1;
-        this.passDistance = 30;
+        this.passDistance = 35;
 
         this.sensorDirections = [-Math.PI / 2, -Math.PI / 4, -Math.PI / 8, 0, Math.PI / 8, Math.PI / 4, Math.PI / 2];
         this.sensorReach = 250;
