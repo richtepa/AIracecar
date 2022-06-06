@@ -24,7 +24,7 @@ class NNcoordinator {
         } else {
             this.nextNNs = [...this.bestNNs];
             for (var k = 0; k < this.best; k++) {
-                this.nextNNs[k].checkpoints = 0;
+                this.nextNNs[k].reset();
             }
             for (var i = 0; i < this.pass; i++) {
                 for (var j = i + 1; j < this.pass; j++) {
@@ -60,7 +60,7 @@ class NNcoordinator {
             }
             
             // shorter completion
-            if (a.sinceLastCheckpoint < b.sinceLastCheckpoint) {
+            if (a.frameCounter < b.frameCounter) {
                 return -1;
             }
         });
@@ -86,10 +86,9 @@ class NNcoordinator {
 
 class NN {
     constructor(netStruct, nn1 = undefined, nn2 = undefined) {
+        this.reset();
         var net = [...netStruct];
         net.unshift(0); // [0, 9, 10, 10, 5, 2]
-        this.checkpoints = 0;
-        this.sinceLastCheckpoint = 0;
         this.net = new Array();
         for (var c = 1; c < net.length; c++) {
             var colNodes = new Array();
@@ -102,6 +101,12 @@ class NN {
             }
             this.net.push(colNodes);
         }
+    }
+    
+    reset(){
+        this.checkpoints = 0;
+        this.sinceLastCheckpoint = 0;
+        this.frameCounter = 0;
     }
 
     frame(inp) { // []

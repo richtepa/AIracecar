@@ -29,6 +29,7 @@ class Car {
     frame(firstFrame = false) {
         this.frameCounter++;
         this.nn.sinceLastCheckpoint++;
+        this.nn.frameCounter++;
         if(this.speed == 0){
             //console.log(this.nn.checkpoints, "speed");
             this.nn.checkpoints = -2;
