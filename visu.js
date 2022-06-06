@@ -3,7 +3,7 @@ class Visu {
         this.fps = 30;
         this.nnCoordinator = new NNcoordinator([9, 10, 10, 5, 2]);
 
-
+        this.showCheckpoints = true;
 
         this.height = window.innerHeight;
         this.width = window.innerWidth;
@@ -52,8 +52,10 @@ class Visu {
     frame() {
         this.c.clearRect(0, 0, this.width, this.height);
         this.drawStart();
-        for (var checkpoint of this.map.mapData.checkpoints) {
-            this.drawCheckpoint(checkpoint);
+        if(this.showCheckpoints){
+            for (var checkpoint of this.map.mapData.checkpoints) {
+                this.drawCheckpoint(checkpoint);
+            }
         }
         this.drawCar(this.cars[0]);
         this.drawHUD(this.cars[0]);
@@ -126,7 +128,8 @@ class Visu {
         this.c.font = size / 10 + "px sans-serif";
         this.c.fillText(car.frameCounter, left + size + border, top + (size / 2));
 
-        this.c.fillText(this.nnCoordinator.generation + "(" + localBest + "/" + globalBest + ")", border, border + width);
+        this.c.fillText(this.nnCoordinator.generation + "(" + this.nnCoordinator.nnNum + "/" + this.nnCoordinator.nextNNs.length + ")", border, border + width);
+        this.c.fillText(localBest, border, border + (3*width));
 
     }
 

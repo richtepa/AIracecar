@@ -37,6 +37,10 @@ class NNcoordinator {
         }
         this.nnNum = -1;
     }
+    
+    createNNfromJSON(json){
+        return new NN(this.nnStructure, json, json);
+    }
 
     evaluateNNs() {
         this.bestNNs = [...this.nextNNs];
@@ -51,6 +55,7 @@ class NNcoordinator {
                 return 1;
             }
 
+            
             // longer since checkpoints
             if (a.sinceLastCheckpoint > b.sinceLastCheckpoint) {
                 return -1;
@@ -58,6 +63,7 @@ class NNcoordinator {
             if (a.sinceLastCheckpoint > b.sinceLastCheckpoint) {
                 return 1;
             }
+            
             
             // shorter completion
             if (a.frameCounter < b.frameCounter) {
@@ -108,6 +114,10 @@ class NN {
         this.checkpoints = 0;
         this.sinceLastCheckpoint = 0;
         this.frameCounter = 0;
+    }
+    
+    export(){
+        return JSON.stringify(this);
     }
 
     frame(inp) { // []
