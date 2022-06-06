@@ -8,9 +8,9 @@ class NNcoordinator {
         this.generation = 0;
         this.createNNs();
     }
-    
+
     createNNs() {
-        this.generation ++;
+        this.generation++;
         if (this.bestNNs.length == 0) {
             this.nextNNs = new Array();
             for (var k = 0; k < this.best; k++) {
@@ -37,17 +37,41 @@ class NNcoordinator {
         }
         this.nnNum = -1;
     }
-    
-    evaluateNNs(){
+
+    evaluateNNs() {
         this.bestNNs = [...this.nextNNs];
-        this.bestNNs.sort((a, b) => (a.checkpoints > b.checkpoints) ? 1 : (a.checkpoints === b.checkpoints) ? ((a.sinceLastCheckpoint > b.sinceLastCheckpoint) ? 1 : -1) : -1 );
-        this.bestNNs = this.bestNNs.reverse();
-        this.bestNNs = this.bestNNs.splice(0,this.best);
+        //this.bestNNs.sort((a, b) => (a.checkpoints > b.checkpoints) ? 1 : (a.checkpoints === b.checkpoints) ? ((a.sinceLastCheckpoint > b.sinceLastCheckpoint) ? 1 : -1) : -1);
+
+        this.bestNNs.sort(function (a, b) {
+            //more checkpoints
+            if (a.checkpoints > b.checkpoints) {
+                return -1;
+            }
+            if (a.checkpoints < b.checkpoints) {
+                return 1;
+            }
+
+            // longer since checkpoints
+            if (a.sinceLastCheckpoint > b.sinceLastCheckpoint) {
+                return -1;
+            }
+            if (a.sinceLastCheckpoint > b.sinceLastCheckpoint) {
+                return 1;
+            }
+            
+            // shorter completion
+            if (a.sinceLastCheckpoint < b.sinceLastCheckpoint) {
+                return -1;
+            }
+        });
+
+        //this.bestNNs = this.bestNNs.reverse();
+        this.bestNNs = this.bestNNs.splice(0, this.best);
     }
-    
-    getNextNN(){
+
+    getNextNN() {
         this.nnNum++;
-        if(this.nnNum > this.nextNNs.length-1){
+        if (this.nnNum > this.nextNNs.length - 1) {
             this.evaluateNNs();
             this.createNNs();
             this.nnNum++;
@@ -73,7 +97,7 @@ class NN {
                 if (nn1 == undefined || nn2 == undefined) {
                     colNodes.push(new Node(net[c - 1]));
                 } else {
-                    colNodes.push(new Node(net[c - 1], nn1.net[c-1][i], nn2.net[c-1][i]));
+                    colNodes.push(new Node(net[c - 1], nn1.net[c - 1][i], nn2.net[c - 1][i]));
                 }
             }
             this.net.push(colNodes);
@@ -98,10 +122,10 @@ class NN {
         //var out = [0, 0];
         return out; // [acc, dir]
     }
-    
-    reward(){
+
+    reward() {
         this.sinceLastCheckpoint = 0;
-        this.checkpoints ++;
+        this.checkpoints++;
     }
 
     calculate() {
@@ -127,11 +151,11 @@ class Node {
             for (var i = 0; i < preNodeAmount; i++) {
                 var gene1Weight = Math.random();
                 var gene2Weight = 1 - gene1Weight;
-                this.weights.push((node1.weights[i] * gene1Weight) + (node1.weights[i] * gene2Weight) + (Math.random()*0.1)-0.05);
+                this.weights.push((node1.weights[i] * gene1Weight) + (node1.weights[i] * gene2Weight) + (Math.random() * 0.1) - 0.05);
             }
             var gene1Weight = Math.random();
             var gene2Weight = 1 - gene1Weight;
-            this.bias = (node1.bias * gene1Weight) + (node1.bias * gene2Weight) + (Math.random()*0.1)-0.05;
+            this.bias = (node1.bias * gene1Weight) + (node1.bias * gene2Weight) + (Math.random() * 0.1) - 0.05;
         }
     }
 
