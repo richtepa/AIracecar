@@ -76,6 +76,7 @@ class NNcoordinator {
             this.createNNs();
             this.nnNum++;
             localBest = 0;
+            console.log("new generation");
         }
         return this.nextNNs[this.nnNum];
     }

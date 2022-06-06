@@ -135,7 +135,7 @@ class Car {
     }
 
     done() {
-        //console.log(this.nn.checkpoints, "done");
+        console.log(this.nn.checkpoints, "done");
         this.nn.reward();
         this.running = false;
         //stop();
