@@ -18,7 +18,17 @@ class Visu {
     }
 
     click(event) {
-        console.log(event.clientX / visu.scale, event.clientY / visu.scale);
+        var x = Math.round(event.clientX / visu.scale);
+        var y = Math.round(event.clientY / visu.scale);
+        console.log(x, y);
+        visu.clickPoints.push({
+            "x": x,
+            "y": y
+        });
+        visu.drawBox({
+            "x": x,
+            "y": y
+        }, "yellow");
     }
 
     async setMap(map) {
@@ -115,7 +125,7 @@ class Visu {
         this.c.textBaseline = "middle";
         this.c.font = size / 10 + "px sans-serif";
         this.c.fillText(car.frameCounter, left + size + border, top + (size / 2));
-        
+
         this.c.fillText(this.nnCoordinator.generation + "(" + localBest + "/" + globalBest + ")", border, border + width);
 
     }

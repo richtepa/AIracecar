@@ -23,11 +23,16 @@ function start() {
         }
         visu.frame();
     }, 1000 / visu.fps);
+    
+    visu.clickPoint = false;
+    console.log(JSON.stringify(visu.clickPoints));
 }
 
 function stop() {
     window.clearInterval(loop);
     running = false;
+    visu.clickPoints = new Array();
+    visu.clickPoint = true;
 }
 
 function pause(){
