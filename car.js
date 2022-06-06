@@ -135,8 +135,15 @@ class Car {
     }
 
     done() {
-        console.log(this.nn.checkpoints, "done");
         this.nn.reward();
+        
+        longest = structuredClone(this.nn.checkpoints);
+        var res = structuredClone(this.nn.frameCounter);
+        if(res < fastest){
+            fastest = res;
+        }
+        
+        console.log(this.nn.frameCounter, "done");
         this.running = false;
         //stop();
     }
@@ -146,12 +153,10 @@ class Car {
         if(res < 0){
             res = 0;
         }
-        if(res > localBest){
-            localBest = res;
+        if(res > longest){
+            longest = res;
         }
-        if(res > globalBest){
-            globalBest = res;
-        }
+        
         console.log(res, "lost");
         this.running = false;
         //stop();

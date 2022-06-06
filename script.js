@@ -1,5 +1,5 @@
-localBest = 0;
-globalBest = 0;
+longest = 0;
+fastest = Infinity;
 
 window.onload = function () {
     load();

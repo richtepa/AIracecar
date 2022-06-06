@@ -52,7 +52,7 @@ class Visu {
     frame() {
         this.c.clearRect(0, 0, this.width, this.height);
         this.drawStart();
-        if(this.showCheckpoints){
+        if (this.showCheckpoints) {
             for (var checkpoint of this.map.mapData.checkpoints) {
                 this.drawCheckpoint(checkpoint);
             }
@@ -129,7 +129,12 @@ class Visu {
         this.c.fillText(car.frameCounter, left + size + border, top + (size / 2));
 
         this.c.fillText(this.nnCoordinator.generation + "(" + this.nnCoordinator.nnNum + "/" + this.nnCoordinator.nextNNs.length + ")", border, border + width);
-        this.c.fillText(localBest, border, border + (3*width));
+
+        if (fastest == Infinity) {
+            this.c.fillText(longest, border, border + (3 * width));
+        } else {
+            this.c.fillText(fastest, border, border + (3 * width));
+        }
 
     }
 
