@@ -1,6 +1,6 @@
 class Visu {
     constructor(el) {
-        this.fps = 30;
+        this.fps = 60;
         this.nnCoordinator = new NNcoordinator([9, 10, 10, 5, 2]);
 
         this.showCheckpoints = true;
