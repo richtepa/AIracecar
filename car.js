@@ -13,7 +13,6 @@ class Car {
 
         
         this.passed = 0;
-        //this.frame(true);
         this.speed = 1;
         this.inp = {
             acc: 0,
@@ -34,12 +33,10 @@ class Car {
         this.nn.sinceLastCheckpoint++;
         this.nn.frameCounter++;
         if(this.speed == 0){
-            //console.log(this.nn.checkpoints, "speed");
             this.nn.checkpoints = -2;
             this.lost();
         }
         if (this.nn.sinceLastCheckpoint > 15*60) {
-            //console.log(this.nn.checkpoints, "timeout");
             this.nn.checkpoints = -1;
             this.lost();
         }
@@ -77,10 +74,7 @@ class Car {
     }
 
     updateSensors() {
-        //this.lastCheckpoint = this.checkCheckpoint(this.passed - 1);
         this.actualCheckpoint = this.checkCheckpoint(this.passed);
-        //this.nextCheckpoint = this.checkCheckpoint(this.passed + 1);
-
         for (var i = 0; i < this.sensorDirections.length; i++) {
             this.distances[i] = this.checkSensorLine(this.sensorDirections[i]);
         }
@@ -107,7 +101,6 @@ class Car {
         var factor = 1;
         if (lost < 1) {
             factor = lost;
-            //console.log("% lost", Math.round(lost*100));
             this.lost();
         }
         
@@ -148,7 +141,6 @@ class Car {
         
         console.log(this.nn.frameCounter, "done");
         this.running = false;
-        //stop();
     }
 
     lost() {
@@ -162,6 +154,5 @@ class Car {
         
         console.log(res, "lost");
         this.running = false;
-        //stop();
     }
 }

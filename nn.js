@@ -6,8 +6,6 @@ class NNcoordinator {
         this.rand = 45;
         this.bestNNs = new Array();
         this.generation = 0;
-        //this.createNNs();
-        //this.isNewGeneration = true;
     }
 
     createNNs() {
@@ -45,8 +43,7 @@ class NNcoordinator {
 
     evaluateNNs() {
         this.bestNNs = [...this.nextNNs];
-        //this.bestNNs.sort((a, b) => (a.checkpoints > b.checkpoints) ? 1 : (a.checkpoints === b.checkpoints) ? ((a.sinceLastCheckpoint > b.sinceLastCheckpoint) ? 1 : -1) : -1);
-
+        
         this.bestNNs.sort(function (a, b) {
             //more checkpoints
             if (a.checkpoints > b.checkpoints) {
@@ -72,7 +69,6 @@ class NNcoordinator {
             }
         });
 
-        //this.bestNNs = this.bestNNs.reverse();
         this.bestNNs = this.bestNNs.splice(0, this.best);
     }
 
@@ -132,7 +128,7 @@ class NN {
         return JSON.stringify(this);
     }
 
-    frame(inp) { // []
+    frame(inp) {
 
 
         for (var i = 0; i < inp.length; i++) {
@@ -146,8 +142,6 @@ class NN {
             out[i] = this.net[this.net.length - 1][i].value;
         }
 
-
-        //var out = [0, 0];
         return out; // [acc, dir]
     }
 
@@ -175,7 +169,6 @@ class Node {
             }
             this.bias = 2 * Math.random() - 1; // bias zwischen -1 und 1
         } else {
-            // TODO
             for (var i = 0; i < preNodeAmount; i++) {
                 var gene1Weight = Math.random();
                 var gene2Weight = 1 - gene1Weight;

@@ -32,12 +32,7 @@ class Visu {
             "y": y
         }, "yellow");
     }
-    /*
-    setMap(map) {
-        this.map = map;
-        this.drawMap();
-    }
-    */
+    
     load(mapName) {
         if (mapName != undefined) {
             this.nextMap = mapName;
@@ -54,7 +49,6 @@ class Visu {
             this.map = maps[this.nextMap];
             this.map.draw(this.scale);
             this.drawMap(this.map);
-            //setMap(maps[this.nextMap]); 
         }
 
         this.cars[0].reset(this.map);
@@ -105,10 +99,7 @@ class Visu {
 
     drawCar(car) {
         this.drawBox(car.pos, "blue");
-        //this.drawLine(car.pos, car.lastCheckpoint, "green");
-        //this.drawLine(car.pos, car.actualCheckpoint, "red");
-        //this.drawLine(car.pos, car.nextCheckpoint, "gray");
-
+        
         for (var i = 0; i < car.distances.length; i++) {
             var to = new Object();
             var dir = car.direction - (car.inp.dir * car.dirFactor) + car.sensorDirections[i];
