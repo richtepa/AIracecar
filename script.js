@@ -1,4 +1,4 @@
-mapNames = ["austria", "italia_1"];
+mapNames = ["austria", "italy_1"];
 longest = 0;
 fastest = Infinity;
 
@@ -16,11 +16,11 @@ async function load() {
         maps[mapName] = map;
     }
 
-    visu.setMap(maps["italia_1"]);
+    visu.setMap(maps["italy_1"]);
     visu.load();
 
     //var bestJSON = await loadJson("best-austria.json");
-    var bestJSON = await loadJson("best-italia_1.json");
+    var bestJSON = await loadJson("best-italy_1.json");
     visu.nnCoordinator.nextNNs[1] = visu.nnCoordinator.createNNfromJSON(bestJSON);
 
     start();
