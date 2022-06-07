@@ -15,6 +15,8 @@ class Visu {
         el.appendChild(canvas);
 
         canvas.addEventListener("click", this.click);
+
+        this.drawingEnabled = true;
     }
 
     click(event) {
@@ -63,15 +65,17 @@ class Visu {
     }
 
     frame() {
-        this.c.clearRect(0, 0, this.width, this.height);
-        this.drawStart();
-        if (this.showCheckpoints) {
-            for (var checkpoint of this.map.mapData.checkpoints) {
-                this.drawCheckpoint(checkpoint);
+        if (this.drawingEnabled) {
+            this.c.clearRect(0, 0, this.width, this.height);
+            this.drawStart();
+            if (this.showCheckpoints) {
+                for (var checkpoint of this.map.mapData.checkpoints) {
+                    this.drawCheckpoint(checkpoint);
+                }
             }
+            this.drawCar(this.cars[0]);
+            this.drawHUD(this.cars[0]);
         }
-        this.drawCar(this.cars[0]);
-        this.drawHUD(this.cars[0]);
 
         if (!this.cars[0].running) {
             this.load();
@@ -141,12 +145,12 @@ class Visu {
         this.c.font = size / 10 + "px sans-serif";
         this.c.fillText(car.frameCounter, left + size + border, top + (size / 2));
 
-        this.c.fillText(this.nnCoordinator.generation + "(" + this.nnCoordinator.nnNum + "/" + this.nnCoordinator.nextNNs.length + ")", border, (2*border) + width);
+        this.c.fillText(this.nnCoordinator.generation + "(" + this.nnCoordinator.nnNum + "/" + this.nnCoordinator.nextNNs.length + ")", border, (2 * border) + width);
 
         if (fastest == Infinity) {
-            this.c.fillText(longest, border, (2*border) + (3 * width));
+            this.c.fillText(longest, border, (2 * border) + (3 * width));
         } else {
-            this.c.fillText(fastest, border, (2*border) + (3 * width));
+            this.c.fillText(fastest, border, (2 * border) + (3 * width));
         }
 
     }
