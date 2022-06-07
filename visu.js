@@ -141,12 +141,12 @@ class Visu {
         this.c.font = size / 10 + "px sans-serif";
         this.c.fillText(car.frameCounter, left + size + border, top + (size / 2));
 
-        this.c.fillText(this.nnCoordinator.generation + "(" + this.nnCoordinator.nnNum + "/" + this.nnCoordinator.nextNNs.length + ")", border, border + width);
+        this.c.fillText(this.nnCoordinator.generation + "(" + this.nnCoordinator.nnNum + "/" + this.nnCoordinator.nextNNs.length + ")", border, (2*border) + width);
 
         if (fastest == Infinity) {
-            this.c.fillText(longest, border, border + (3 * width));
+            this.c.fillText(longest, border, (2*border) + (3 * width));
         } else {
-            this.c.fillText(fastest, border, border + (3 * width));
+            this.c.fillText(fastest, border, (2*border) + (3 * width));
         }
 
     }
