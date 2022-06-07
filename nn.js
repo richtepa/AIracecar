@@ -6,7 +6,8 @@ class NNcoordinator {
         this.rand = 45;
         this.bestNNs = new Array();
         this.generation = 0;
-        this.createNNs();
+        //this.createNNs();
+        //this.isNewGeneration = true;
     }
 
     createNNs() {
@@ -37,7 +38,7 @@ class NNcoordinator {
         }
         this.nnNum = -1;
     }
-    
+
     createNNfromJSON(json) {
         return new NN(this.nnStructure, json, json, 0);
     }
@@ -77,13 +78,23 @@ class NNcoordinator {
 
     getNextNN() {
         this.nnNum++;
-        if (this.nnNum > this.nextNNs.length - 1) {
+        if (this.nextNNs == undefined){
+            this.createNNs();
+            this.nnNum++;
+            longest = 0;
+            fastest = Infinity;
+            console.log("new generation");
+            this.isNewGeneration = true;
+        } else if(this.nnNum > this.nextNNs.length - 1) {
             this.evaluateNNs();
             this.createNNs();
             this.nnNum++;
             longest = 0;
             fastest = Infinity;
             console.log("new generation");
+            this.isNewGeneration = true;
+        } else {
+            this.isNewGeneration = false;
         }
         return this.nextNNs[this.nnNum];
     }

@@ -7,17 +7,19 @@ window.onload = function () {
 }
 
 async function load() {
-    visu = new Visu(document.getElementById("content"));
+    visu = new Visu(document.getElementById("contentDiv"));
 
+    mapCanvas = new MapCanvas(document.getElementById("mapDiv"));
     maps = new Object();
     for (mapName of mapNames) {
         var map = new Map();
-        await map.load(mapName, document.getElementById("map"));
+        await map.load(mapName);
+        map.mapCanvas = mapCanvas;
         maps[mapName] = map;
     }
 
-    visu.setMap(maps["italy_1"]);
-    visu.load();
+    //visu.setMap(maps["italy_1"]);
+    visu.load("italy_1");
 
     //var bestJSON = await loadJson("best-austria.json");
     var bestJSON = await loadJson("best-italy_1.json");

@@ -30,23 +30,36 @@ class Visu {
             "y": y
         }, "yellow");
     }
-
-    async setMap(map) {
+    /*
+    setMap(map) {
         this.map = map;
         this.drawMap();
     }
-
-    load() {
+    */
+    load(mapName) {
+        if (mapName != undefined) {
+            this.nextMap = mapName;
+        }
         this.reset();
         this.frame();
     }
 
     reset() {
+        this.cars = new Array();
+        this.cars.push(new Car(this.nnCoordinator.getNextNN()));
+
+        if (this.nnCoordinator.isNewGeneration) {
+            this.map = maps[this.nextMap];
+            this.map.draw(this.scale);
+            this.drawMap(this.map);
+            //setMap(maps[this.nextMap]); 
+        }
+
+        this.cars[0].reset(this.map);
+
         for (var checkpoint of this.map.mapData.checkpoints) {
             checkpoint.passed = false;
         }
-        this.cars = new Array();
-        this.cars.push(new Car(this.map, this.nnCoordinator.getNextNN()));
     }
 
     frame() {

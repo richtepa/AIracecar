@@ -1,5 +1,5 @@
 class Car {
-    constructor(map, nn) {
+    constructor(nn) {
         this.nn = nn;
         this.accFactor = 1;
         this.dirFactor = 0.1;
@@ -12,10 +12,6 @@ class Car {
         this.frameCounter = 0;
 
         
-        this.map = map;
-        this.pos = { ...this.map.mapData.start
-        };
-        this.direction = direction(this.pos, this.map.mapData.checkpoints[0]);
         this.passed = 0;
         //this.frame(true);
         this.speed = 1;
@@ -24,6 +20,13 @@ class Car {
             dir: 0
         };
         this.running = true;
+    }
+    
+    reset(map){
+        this.map = map;
+        this.pos = { ...this.map.mapData.start
+        };
+        this.direction = direction(this.pos, this.map.mapData.checkpoints[0]);  
     }
 
     frame(firstFrame = false) {
