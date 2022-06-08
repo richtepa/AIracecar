@@ -10,9 +10,9 @@ async function load() {
     mapCanvas = new MapCanvas(document.getElementById("mapDiv"));
     mapCoordinator = new MapCoordinator(mapNames, mapCanvas);
     await mapCoordinator.load();
-    
+
     visu = new Visu(document.getElementById("contentDiv"));
-    
+
     for (mapName of mapNames) {
         option = document.createElement("option");
         option.value = mapName;
@@ -36,6 +36,8 @@ async function load() {
 
 function start() {
     running = true;
+    visu.drawingEnabled = true;
+
     loop = window.setInterval(function () {
         for (car of visu.cars) {
             car.frame();
@@ -46,11 +48,28 @@ function start() {
     visu.clickPoint = false;
     console.log(JSON.stringify(visu.clickPoints));
     visu.clickPoints = new Array();
+
+}
+
+function startFast() {
+    stop();
+    
+    running = true;
+    visu.drawingEnabled = false;
+    
+    while(running){
+        for (car of visu.cars) {
+            car.frame();
+        }
+        visu.frame();
+    }
 }
 
 function stop() {
-    window.clearInterval(loop);
     running = false;
+    if (loop != undefined) {
+        window.clearInterval(loop);
+    }
     visu.clickPoints = new Array();
     visu.clickPoint = true;
 }
