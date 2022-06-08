@@ -3,7 +3,7 @@ class Visu {
         this.fps = 60;
         this.nnCoordinator = new NNcoordinator([9, 10, 10, 5, 2]);
 
-        this.showCheckpoints = true;
+        this.showCheckpoints = false;
 
         this.height = window.innerHeight;
         this.width = window.innerWidth;
