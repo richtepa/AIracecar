@@ -13,10 +13,9 @@ async function load() {
 
     visu = new Visu(document.getElementById("contentDiv"));
 
-    visu.load(document.getElementById("mapInput").value);
-
-    //var bestJSON = await loadJson("best-austria.json");
-    var bestJSON = await loadJson("best-combined.json");
+    visu.load(mapNames[0]);
+    
+    var bestJSON = await loadJson("../trainedNNs/best-combined.json");
     visu.nnCoordinator.nextNNs[1] = visu.nnCoordinator.createNNfromJSON(bestJSON);
 
     start();
