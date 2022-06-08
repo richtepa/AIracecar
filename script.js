@@ -13,18 +13,6 @@ async function load() {
 
     visu = new Visu(document.getElementById("contentDiv"));
 
-    for (mapName of mapNames) {
-        option = document.createElement("option");
-        option.value = mapName;
-        option.innerHTML = mapName;
-        document.getElementById("mapInput").appendChild(option);
-    }
-
-
-    document.getElementById("mapInput").addEventListener("change", function () {
-        visu.nextMap = this.value;
-    });
-
     visu.load(document.getElementById("mapInput").value);
 
     //var bestJSON = await loadJson("best-austria.json");
@@ -57,12 +45,12 @@ function startFast() {
     running = true;
     visu.drawingEnabled = false;
     
-    while(running && document.getElementById("keepRunning").checked){
+    loop = window.setInterval(function () {
         for (car of visu.cars) {
             car.frame();
         }
         visu.frame();
-    }
+    }, 1.75);
 }
 
 function stop() {
