@@ -6,7 +6,7 @@ window.onload = function () {
 }
 
 async function load() {
-    mapNames = ["austria", "italy_1"];
+    mapNames = ["bahrain", "spain", "australia", "italy_1", "austria"];
     mapCanvas = new MapCanvas(document.getElementById("mapDiv"));
     mapCoordinator = new MapCoordinator(mapNames, mapCanvas);
     await mapCoordinator.load();
@@ -36,7 +36,7 @@ async function load() {
 
 function start() {
     running = true;
-    visu.drawingEnabled = true;
+    //visu.drawingEnabled = true;
 
     loop = window.setInterval(function () {
         for (car of visu.cars) {
@@ -57,7 +57,7 @@ function startFast() {
     running = true;
     visu.drawingEnabled = false;
     
-    while(running){
+    while(running && document.getElementById("keepRunning").checked){
         for (car of visu.cars) {
             car.frame();
         }
