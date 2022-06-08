@@ -1,3 +1,36 @@
+class MapCoordinator {
+    constructor(mapNames, mapCanvas) {
+        this.mapNames = mapNames;
+        this.mapCanvas = mapCanvas;
+    }
+
+    async load() {
+        this.maps = new Object();
+        for (var mapName of this.mapNames) {
+            var map = new Map();
+            await map.load(mapName);
+            map.mapCanvas = this.mapCanvas;
+            this.maps[mapName] = map;
+        }
+        this.reset();
+    }
+    
+    reset(){
+        this.mapNum = 0;
+    }
+    
+    getMap(){
+        return this.maps[this.mapNames[this.mapNum]];
+    }
+    
+    nextMap(){
+        this.mapNum ++;
+        this.mapNum = this.mapNum % this.mapNames.length;
+        return this.mapNum == 0;
+    }
+}
+
+
 class Map {
     async load(name) {
         this.mapName = name;
@@ -48,7 +81,7 @@ class MapCanvas {
         this.c = canvas.getContext("2d");
         this.el.appendChild(canvas);
     }
-    
+
     draw(scale, mapImage) {
         this.c.clearRect(0, 0, this.width, this.height);
         this.c.drawImage(mapImage, 0, 0, mapImage.naturalWidth * scale, mapImage.naturalHeight * scale);

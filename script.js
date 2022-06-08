@@ -1,4 +1,3 @@
-mapNames = ["austria", "italy_1"];
 longest = 0;
 fastest = Infinity;
 
@@ -7,16 +6,12 @@ window.onload = function () {
 }
 
 async function load() {
-    visu = new Visu(document.getElementById("contentDiv"));
-
+    mapNames = ["austria", "italy_1"];
     mapCanvas = new MapCanvas(document.getElementById("mapDiv"));
-    maps = new Object();
-    for (mapName of mapNames) {
-        var map = new Map();
-        await map.load(mapName);
-        map.mapCanvas = mapCanvas;
-        maps[mapName] = map;
-    }
+    mapCoordinator = new MapCoordinator(mapNames, mapCanvas);
+    await mapCoordinator.load();
+    
+    visu = new Visu(document.getElementById("contentDiv"));
     
     for (mapName of mapNames) {
         option = document.createElement("option");
@@ -24,16 +19,18 @@ async function load() {
         option.innerHTML = mapName;
         document.getElementById("mapInput").appendChild(option);
     }
-    document.getElementById("mapInput").addEventListener("change", function(){
-       visu.nextMap = this.value; 
+
+
+    document.getElementById("mapInput").addEventListener("change", function () {
+        visu.nextMap = this.value;
     });
-    
+
     visu.load(document.getElementById("mapInput").value);
 
     //var bestJSON = await loadJson("best-austria.json");
-    var bestJSON = await loadJson("best-italy_1.json");
+    var bestJSON = await loadJson("best-combined.json");
     visu.nnCoordinator.nextNNs[1] = visu.nnCoordinator.createNNfromJSON(bestJSON);
-    
+
     start();
 }
 
@@ -48,6 +45,7 @@ function start() {
 
     visu.clickPoint = false;
     console.log(JSON.stringify(visu.clickPoints));
+    visu.clickPoints = new Array();
 }
 
 function stop() {

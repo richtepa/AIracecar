@@ -9,9 +9,16 @@ class Car {
         this.sensorReach = 250;
 
         this.distances = new Array(this.sensorDirections.length);
+
+    }
+
+    load(map) {
+        this.map = map;
+    }
+
+    reset() {
         this.frameCounter = 0;
 
-        
         this.passed = 0;
         this.speed = 1;
         this.inp = {
@@ -19,30 +26,28 @@ class Car {
             dir: 0
         };
         this.running = true;
-    }
-    
-    reset(map){
-        this.map = map;
+
+
         this.pos = { ...this.map.mapData.start
         };
-        this.direction = direction(this.pos, this.map.mapData.checkpoints[0]);  
+        this.direction = direction(this.pos, this.map.mapData.checkpoints[0]);
     }
 
     frame(firstFrame = false) {
         this.frameCounter++;
         this.nn.sinceLastCheckpoint++;
         this.nn.frameCounter++;
-        if(this.speed == 0){
+        if (this.speed == 0) {
             this.nn.checkpoints = -2;
             this.lost();
         }
-        if (this.nn.sinceLastCheckpoint > 15*60) {
+        if (this.nn.sinceLastCheckpoint > 15 * 60) {
             this.nn.checkpoints = -1;
             this.lost();
         }
 
         this.updatePosition();
-        
+
         this.updateSensors();
 
         var information = [
@@ -63,7 +68,7 @@ class Car {
         };
 
         this.speed += this.inp.acc * this.accFactor;
-        if(this.speed < 0){
+        if (this.speed < 0) {
             this.speed = 0;
         }
         this.direction += this.inp.dir * this.dirFactor;
@@ -103,7 +108,7 @@ class Car {
             factor = lost;
             this.lost();
         }
-        
+
         this.pos.x += dx * factor;
         this.pos.y += dy * factor;
     }
@@ -132,27 +137,40 @@ class Car {
 
     done() {
         this.nn.reward();
-        
+        this.nn.maps++;
+
         longest = structuredClone(this.nn.checkpoints);
         var res = structuredClone(this.nn.frameCounter);
-        if(res < fastest){
+        if (res < fastest) {
             fastest = res;
         }
-        
-        console.log(this.nn.frameCounter, "done");
-        this.running = false;
+
+
+        if (!mapCoordinator.nextMap()) {
+            var map = mapCoordinator.getMap()
+            this.load(map);
+            this.reset();
+            visu.map = map;
+            visu.drawMap();
+
+            for (var checkpoint of map.mapData.checkpoints) {
+                checkpoint.passed = false;
+            }
+        } else {
+
+            this.logStats();
+            this.running = false;
+        }
     }
 
     lost() {
-        var res = structuredClone(this.nn.checkpoints);
-        if(res < 0){
-            res = 0;
-        }
-        if(res > longest){
-            longest = res;
-        }
-        
-        console.log(res, "lost");
+        mapCoordinator.reset();
+
+        this.logStats();
         this.running = false;
+    }
+
+    logStats() {
+        console.log(this.nn.maps, this.nn.checkpoints, this.nn.sinceLastCheckpoint, this.nn.frameCounter, "lost");
     }
 }

@@ -45,6 +45,14 @@ class NNcoordinator {
         this.bestNNs = [...this.nextNNs];
         
         this.bestNNs.sort(function (a, b) {
+            //more maps
+            if (a.maps > b.maps) {
+                return -1;
+            }
+            if (a.maps < b.maps) {
+                return 1;
+            }
+            
             //more checkpoints
             if (a.checkpoints > b.checkpoints) {
                 return -1;
@@ -119,6 +127,7 @@ class NN {
     }
 
     reset() {
+        this.maps = 0;
         this.checkpoints = 0;
         this.sinceLastCheckpoint = 0;
         this.frameCounter = 0;

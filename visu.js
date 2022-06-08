@@ -45,13 +45,15 @@ class Visu {
         this.cars = new Array();
         this.cars.push(new Car(this.nnCoordinator.getNextNN()));
 
-        if (this.nnCoordinator.isNewGeneration) {
-            this.map = maps[this.nextMap];
+        //if (this.nnCoordinator.isNewGeneration) {
+            //this.map = mapCoordinator.maps[this.nextMap];
+            this.map = mapCoordinator.getMap();
             this.map.draw(this.scale);
             this.drawMap(this.map);
-        }
+        //}
 
-        this.cars[0].reset(this.map);
+        this.cars[0].load(this.map);
+        this.cars[0].reset();
 
         for (var checkpoint of this.map.mapData.checkpoints) {
             checkpoint.passed = false;
