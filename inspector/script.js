@@ -5,7 +5,24 @@ window.onload = function () {
 async function load() {
     nodeVisu = new NodeVisu(document.getElementById("contentDiv"));
     nn = await loadJson("../trainedNNs/best-combined.json")
-    nodeVisu.loadNN(nn);
+    nodeVisu.loadNN(
+        nn,
+        [
+            "speed",
+            "direction",
+            "distances[0]",
+            "distances[1]",
+            "distances[2]",
+            "distances[3]",
+            "distances[4]",
+            "distances[5]",
+            "distances[6]"
+        ],
+        [
+            "acceleration",
+            "direction"
+        ]
+    );
 }
 
 function update() {
@@ -37,8 +54,10 @@ class NodeVisu {
         canvas.addEventListener("mouseup", this.show.bind(this));
     }
 
-    loadNN(nn) {
+    loadNN(nn, inputs = [], outputs = []) {
         this.nn = nn;
+        this.inputs = inputs;
+        this.outputs = outputs;
         this.show();
     }
 
@@ -120,13 +139,21 @@ class NodeVisu {
                 if (this.nn.net[c][r].show) {
                     this.drawNode(c, r, this.nn.net[c][r].bias);
                     for (var w = 0; w < this.nn.net[c][r].weights.length; w++) {
-                        if (Math.abs(this.nn.net[c][r].weights[w]) > minWeight && this.nn.net[c-1][w].show) {
+                        if (Math.abs(this.nn.net[c][r].weights[w]) > minWeight && this.nn.net[c - 1][w].show) {
                             this.drawConnection(c, r, w, this.nn.net[c][r].weights[w]);
                         }
                     }
                 }
             }
         }
+
+        for (var i = 0; i < this.inputs.length; i++) {
+            this.writeText(this.inputs[i], (0 + 0.5) * this.vx, (i + 0.5) * this.vy, 10);
+        }
+        for (var i = 0; i < this.outputs.length; i++) {
+            this.writeText(this.outputs[i], (this.nn.net.length + 1 + 0.5) * this.vx, (i + 0.5) * this.vy, 10);
+        }
+
         this.c.fillText(minWeight, 25, 50);
     }
 
@@ -134,9 +161,8 @@ class NodeVisu {
         var px = (x + 0.5 + 1) * this.vx;
         var py = (y + 0.5) * this.vy;
 
-        var color = "black";
         var width = "1px";
-        this.drawCircle(px, py, this.nodeRadius, color, width);
+        this.drawCircle(px, py, this.nodeRadius, "black", width);
     }
 
     drawConnection(toX, toY, fromY, weight) {
@@ -162,6 +188,13 @@ class NodeVisu {
         this.c.moveTo(fromX, fromY);
         this.c.lineTo(toX, toY);
         this.c.stroke();
+    }
+
+    writeText(text, x, y, size) {
+        this.c.fillStyle = "black";
+        this.c.textBaseline = "middle";
+        this.c.font = size + "px sans-serif";
+        this.c.fillText(text, x, y);
     }
 
     getColor(value) {
