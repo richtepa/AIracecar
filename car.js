@@ -171,6 +171,6 @@ class Car {
     }
 
     logStats() {
-        console.log(this.nn.maps, this.nn.checkpoints, this.nn.sinceLastCheckpoint, this.nn.frameCounter, "lost");
+        console.log(this.nnCoordinator.num + " (" + this.nnCoordinator.generation + ")", this.nn.maps, this.nn.checkpoints, this.nn.sinceLastCheckpoint, this.nn.frameCounter);
     }
 }
