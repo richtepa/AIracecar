@@ -1,6 +1,7 @@
 class Car {
     constructor(nn) {
         this.nn = nn;
+        nn.score = [0, 0, 0, 0];
         this.accFactor = 1;
         this.dirFactor = 0.1;
         this.passDistance = 35;
@@ -35,14 +36,14 @@ class Car {
 
     frame(firstFrame = false) {
         this.frameCounter++;
-        this.nn.sinceLastCheckpoint++;
-        this.nn.frameCounter++;
+        this.nn.score[2]++;
+        this.nn.score[3]++;
         if (this.speed == 0) {
-            this.nn.checkpoints = -2;
+            this.nn.score[1] = -2;
             this.lost();
         }
-        if (this.nn.sinceLastCheckpoint > 15 * 60) {
-            this.nn.checkpoints = -1;
+        if (this.nn.score[2] > 15 * 60) {
+            this.nn.score[1] = -1;
             this.lost();
         }
 
@@ -120,7 +121,8 @@ class Car {
         if (checkpoint.distance < this.passDistance) {
             if (!checkpoint.passed) {
                 this.passed++;
-                this.nn.reward();
+                this.nn.score[1]++;
+                this.nn.score[2] = 0;
             }
             checkpoint.passed = true;
         }
@@ -136,11 +138,12 @@ class Car {
     }
 
     done() {
-        this.nn.reward();
-        this.nn.maps++;
+        this.nn.score[1]++;
+        this.nn.score[2] = 0;
+        this.nn.score[0]++;
 
-        longest = structuredClone(this.nn.checkpoints);
-        var res = structuredClone(this.nn.frameCounter);
+        longest = structuredClone(this.nn.score[1]);
+        var res = structuredClone(this.nn.score[3]);
         if (res < fastest) {
             fastest = res;
         }
@@ -171,6 +174,6 @@ class Car {
     }
 
     logStats() {
-        console.log(this.nn.maps, this.nn.checkpoints, this.nn.sinceLastCheckpoint, this.nn.frameCounter);
+        console.log(this.nn.score);
     }
 }

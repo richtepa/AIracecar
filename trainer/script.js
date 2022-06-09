@@ -6,7 +6,8 @@ window.onload = function () {
 }
 
 async function load() {
-    mapNames = ["bahrain", "spain", "australia", "italy_1", "austria"];
+    //mapNames = ["bahrain", "spain", "australia", "italy_1", "austria"];
+    mapNames = ["bahrain", "austria"];
     mapCanvas = new MapCanvas(document.getElementById("mapDiv"));
     mapCoordinator = new MapCoordinator(mapNames, mapCanvas);
     await mapCoordinator.load();
@@ -15,8 +16,8 @@ async function load() {
 
     visu.load(mapNames[0]);
     
-    var bestJSON = await loadJson("../trainedNNs/best-combined.json");
-    visu.nnCoordinator.nextNNs[1] = visu.nnCoordinator.createNNfromJSON(bestJSON);
+    var bestNN = await loadJson("../trainedNNs/best-combined.json");
+    visu.nnCoordinator.nextNNs[1] = visu.nnCoordinator.createNNfromObject(bestNN);
 
     start();
 }
