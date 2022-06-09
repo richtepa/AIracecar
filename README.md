@@ -24,6 +24,7 @@ while(training){
         var direction = outputs[1];
         // ToDo: check result
     }
+    // ToDo: calculate score
     nn.score = [mapsDone, checkpointsDone, timeNeeded]; // set score of NN (most important to least important property)
 }
 
