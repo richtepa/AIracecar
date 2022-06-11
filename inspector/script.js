@@ -4,7 +4,7 @@ window.onload = function () {
 
 async function load() {
     nodeVisu = new NodeVisu(document.getElementById("contentDiv"));
-    nn = await loadJson("../trainedNNs/best-combined.json")
+    nn = await loadJson("../trainedNNs/best-compact.json")
     nodeVisu.loadNN(
         nn,
         [
