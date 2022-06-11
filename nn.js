@@ -46,7 +46,7 @@ class NNcoordinator {
 
         this.bestNNs.sort(function (a, b) {
             var length = Math.max(a.score.length, b.score.length);
-            for (var i = 0; i < length; a++) {
+            for (var i = 0; i < length; i++) {
                 if (a == undefined || a.score == undefined || a.score[i] == undefined) {
                     return 1;
                 }
