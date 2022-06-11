@@ -1,7 +1,7 @@
 class Visu {
     constructor(el) {
         this.fps = 60;
-        this.nnCoordinator = new NNcoordinator([9, 10, 10, 5, 2]);
+        this.nnCoordinator = new NNcoordinator([9, 5, 2]);
 
         this.showCheckpoints = false;
 
@@ -140,7 +140,7 @@ class Visu {
 
         this.c.fillText(this.nnCoordinator.generation + "(" + this.nnCoordinator.nnNum + "/" + this.nnCoordinator.nextNNs.length + ")", border, (2 * border) + width);
 
-        if (fastest == Infinity) {
+        if (fastest == -Infinity) {
             this.c.fillText(longest, border, (2 * border) + (3 * width));
         } else {
             this.c.fillText(fastest, border, (2 * border) + (3 * width));

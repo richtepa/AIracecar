@@ -37,9 +37,9 @@ class Car {
     frame(firstFrame = false) {
         this.frameCounter++;
         this.nn.score[2]++;
-        this.nn.score[3]++;
+        this.nn.score[3]--;
         if (this.speed == 0) {
-            this.nn.score[1] = -2;
+            //this.nn.score[1] = -2;
             this.lost();
         }
         if (this.nn.score[2] > 15 * 60) {
@@ -144,7 +144,7 @@ class Car {
 
         longest = structuredClone(this.nn.score[1]);
         var res = structuredClone(this.nn.score[3]);
-        if (res < fastest) {
+        if (res > fastest) {
             fastest = res;
         }
 

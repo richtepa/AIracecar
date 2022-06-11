@@ -72,7 +72,7 @@ class NNcoordinator {
             this.createNNs();
             this.nnNum++;
             longest = 0;
-            fastest = Infinity;
+            fastest = -Infinity;
             console.log("new generation");
             this.isNewGeneration = true;
         } else if (this.nnNum > this.nextNNs.length - 1) {
@@ -80,7 +80,7 @@ class NNcoordinator {
             this.createNNs();
             this.nnNum++;
             longest = 0;
-            fastest = Infinity;
+            fastest = -Infinity;
             console.log("new generation");
             this.isNewGeneration = true;
         } else {
