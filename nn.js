@@ -105,7 +105,7 @@ class NN {
                 if (nn1 == undefined || nn2 == undefined) {
                     colNodes.push(new Node(net[c - 1], undefined, undefined, bias));
                 } else {
-                    colNodes.push(new Node(net[c - 1], nn1.net[c - 1][i], nn2.net[c - 1][i], 0));
+                    colNodes.push(new Node(net[c - 1], nn1.net[c - 1][i], nn2.net[c - 1][i], bias));
                 }
             }
             this.net.push(colNodes);
